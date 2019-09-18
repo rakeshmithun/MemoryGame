@@ -4,18 +4,24 @@ let cards = ['fa fa-diamond', 'fa fa-diamond',
     'fa fa-anchor', 'fa fa-anchor',
     'fa fa-bolt', 'fa fa-bolt',
     'fa fa-cube', 'fa fa-cube',
-    'fa fa-anchor', 'fa fa-anchor',
+    'fa fa-bomb', 'fa fa-bomb',
     'fa fa-leaf', 'fa fa-leaf',
     'fa fa-bicycle', 'fa fa-bicycle'
 ];
+//spread the array of cards
 let card = [...cards];
+let emptyCards = [];
 
+//Generate a card
 function generatedCard(card) {
     return `<li class="card" data-card="${card}"><i class="fa ${card}"></i></li>`;
 }
 
 //Select the deck of cards
 const deck = document.getElementById("deck");
+
+//declare the restart constant
+const restart = document.getElementById("restart");
 
 /*
  * Display the cards on the page
@@ -51,6 +57,7 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+
 function initGame() {
     let deck = document.querySelector('.deck');
     let cardHTML = shuffle(cards).map(function(card) {
@@ -58,37 +65,41 @@ function initGame() {
     });
 
     deck.innerHTML = cardHTML.join('');
+    let allCards = document.querySelectorAll('.card');
+    let openCards = [];
+
+    allCards.forEach(function(card) {
+        card.addEventListener('click', function(e) {
+
+            if (!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match'));
+            openCards.push(card);
+            card.classList.add('open', 'show');
+
+            if (openCards.length == 2) {
+                if (openCards[0].dataset.card == openCards[1].dataset.card) {
+                    openCards[0].classList.add('match');
+                    openCards[0].classList.add('open');
+                    openCards[0].classList.add('show');
+
+                    openCards[1].classList.add('match');
+                    openCards[1].classList.add('open');
+                    openCards[1].classList.add('show');
+                }
+                setTimeout(function() {
+                    openCards.forEach(function(card) {
+                        card.classList.remove('open', 'show');
+                    });
+                    openCards = [];
+                }, 1000);
+            }
+
+        });
+    });
 }
 
 initGame();
 
-let allCards = document.querySelectorAll('.card');
-let openCards = [];
-
-allCards.forEach(function(card) {
-    card.addEventListener('click', function(e) {
-
-        if (!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match'));
-        openCards.push(card);
-        card.classList.add('open', 'show');
-
-        if (openCards.length == 2) {
-            if (openCards[0].dataset.card == openCards[1].dataset.card) {
-                openCards[0].classList.add('match');
-                openCards[0].classList.add('open');
-                openCards[0].classList.add('show');
-
-                openCards[1].classList.add('match');
-                openCards[1].classList.add('open');
-                openCards[1].classList.add('show');
-            }
-            setTimeout(function() {
-                openCards.forEach(function(card) {
-                    card.classList.remove('open', 'show');
-                });
-                openCards = [];
-            }, 1000);
-        }
-
-    });
-});
+function restartGame() {
+    initGame();
+    console.log('Hello');
+};
