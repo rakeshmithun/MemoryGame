@@ -9,9 +9,7 @@ let cards = ['fa fa-diamond', 'fa fa-diamond',
     'fa fa-bicycle', 'fa fa-bicycle'
 ];
 
-let card = document.getElementsByClassName("cards");
-
-//Generate a card
+//Generate a card 
 function generatedCard(card) {
     return `<li class="card" data-card="${card}"><i class="fa ${card}"></i></li>`;
 }
@@ -21,6 +19,19 @@ const deck = document.getElementById("deck");
 
 //declare the restart constant
 const restart = document.getElementById("restart");
+
+//declare empty array as openCards
+let openCards = [];
+
+//select each card
+let allCards = document.querySelectorAll('.card');
+
+//declare the move variable
+let moves = 0;
+let counter = document.querySelector(".moves");
+
+//select timer class
+let timer = document.querySelector(".timer");
 
 /*
  * Display the cards on the page
@@ -57,12 +68,12 @@ function shuffle(array) {
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
-let openCards = [];
-let allCards = document.querySelectorAll('.card');
 
 initGame();
 
+// function to intialise game
 function initGame() {
+    timer.innerHTML = '0 mins 0 secs';
     let deck = document.querySelector('.deck');
     let cardHTML = shuffle(cards).map(function(card) {
         return generatedCard(card);
@@ -73,11 +84,13 @@ function initGame() {
 
     allCards.forEach(function(card) {
         card.addEventListener('click', function(e) {
-            //if (!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match') && card.classList.contains('unmatched'));
             openCards.push(card);
             card.classList.add('open', 'show', 'disabled');
 
+
             if (openCards.length === 2) {
+                movesCounter();
+
                 if (openCards[0].dataset.card === openCards[1].dataset.card) {
                     matched();
                 } else {
@@ -93,7 +106,7 @@ function matched() {
     openCards[0].classList.add("match", "disabled");
     openCards[1].classList.add("match", "disabled");
     openCards = [];
-};
+}
 
 //create an umatched function
 function unmatched() {
@@ -104,7 +117,7 @@ function unmatched() {
         enable();
         openCards = [];
     }, 1100);
-};
+}
 
 // restart the game and lopp into initialise game
 function restartGame() {
@@ -126,3 +139,36 @@ function enable() {
         card.classList.remove('disabled', 'open', 'show', 'unmatched');
     });
 };
+
+//declare timer variables
+second = 0;
+minute = 0
+hour = 0;
+let internval;
+
+function movesCounter() {
+    moves++
+    counter.innerHTML = moves;
+    if (moves === 1) {
+        second = 0;
+        minute = 0;
+        hour = 0;
+        startTimer();
+    }
+}
+
+function startTimer() {
+    //initGame();
+    interval = setInterval(function() {
+        timer.innerHTML = minute + "mins " + second + "secs";
+        second++;
+        if (second == 60) {
+            minute++;
+            second = 0;
+        }
+        if (minute == 60) {
+            hour++;
+            minute = 0;
+        }
+    }, 1000);
+}
