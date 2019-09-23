@@ -75,7 +75,7 @@ function initGame() {
         card.addEventListener('click', function(e) {
             //if (!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match') && card.classList.contains('unmatched'));
             openCards.push(card);
-            card.classList.add('open', 'show');
+            card.classList.add('open', 'show', 'disabled');
 
             if (openCards.length === 2) {
                 if (openCards[0].dataset.card === openCards[1].dataset.card) {
