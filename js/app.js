@@ -4,18 +4,23 @@ let cards = ['fa fa-diamond', 'fa fa-diamond',
     'fa fa-anchor', 'fa fa-anchor',
     'fa fa-bolt', 'fa fa-bolt',
     'fa fa-cube', 'fa fa-cube',
-    'fa fa-anchor', 'fa fa-anchor',
+    'fa fa-bomb', 'fa fa-bomb',
     'fa fa-leaf', 'fa fa-leaf',
     'fa fa-bicycle', 'fa fa-bicycle'
 ];
-let card = [...cards];
 
+let card = document.getElementsByClassName("cards");
+
+//Generate a card
 function generatedCard(card) {
     return `<li class="card" data-card="${card}"><i class="fa ${card}"></i></li>`;
 }
 
 //Select the deck of cards
 const deck = document.getElementById("deck");
+
+//declare the restart constant
+const restart = document.getElementById("restart");
 
 /*
  * Display the cards on the page
@@ -51,6 +56,12 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
+
+let openCards = [];
+let allCards = document.querySelectorAll('.card');
+
+initGame();
+
 function initGame() {
     let deck = document.querySelector('.deck');
     let cardHTML = shuffle(cards).map(function(card) {
@@ -58,37 +69,60 @@ function initGame() {
     });
 
     deck.innerHTML = cardHTML.join('');
+    allCards = document.querySelectorAll('.card');
+
+    allCards.forEach(function(card) {
+        card.addEventListener('click', function(e) {
+            //if (!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match') && card.classList.contains('unmatched'));
+            openCards.push(card);
+            card.classList.add('open', 'show', 'disabled');
+
+            if (openCards.length === 2) {
+                if (openCards[0].dataset.card === openCards[1].dataset.card) {
+                    matched();
+                } else {
+                    unmatched();
+                }
+            }
+        });
+    });
 }
 
-initGame();
+// match the 2 cards that are open if they are of the same type
+function matched() {
+    openCards[0].classList.add("match", "disabled");
+    openCards[1].classList.add("match", "disabled");
+    openCards = [];
+};
 
-let allCards = document.querySelectorAll('.card');
-let openCards = [];
+//create an umatched function
+function unmatched() {
+    openCards[0].classList.add('unmatched');
+    openCards[1].classList.add('unmatched');
+    disable();
+    setTimeout(function() {
+        enable();
+        openCards = [];
+    }, 1100);
+};
 
-allCards.forEach(function(card) {
-    card.addEventListener('click', function(e) {
+// restart the game and lopp into initialise game
+function restartGame() {
+    initGame();
+};
 
-        if (!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match'));
-        openCards.push(card);
-        card.classList.add('open', 'show');
-
-        if (openCards.length == 2) {
-            if (openCards[0].dataset.card == openCards[1].dataset.card) {
-                openCards[0].classList.add('match');
-                openCards[0].classList.add('open');
-                openCards[0].classList.add('show');
-
-                openCards[1].classList.add('match');
-                openCards[1].classList.add('open');
-                openCards[1].classList.add('show');
-            }
-            setTimeout(function() {
-                openCards.forEach(function(card) {
-                    card.classList.remove('open', 'show');
-                });
-                openCards = [];
-            }, 1000);
-        }
-
+// disable the unopened cards
+function disable() {
+    openCards[0].classList.add('disabled');
+    openCards[1].classList.add('disabled');
+    allCards.forEach(function(card) {
+        card.classList.add('disabled');
     });
-});
+};
+
+//enable all cards
+function enable() {
+    allCards.forEach(function(card) {
+        card.classList.remove('disabled', 'open', 'show', 'unmatched');
+    });
+};
