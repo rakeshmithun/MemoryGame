@@ -8,9 +8,8 @@ let cards = ['fa fa-diamond', 'fa fa-diamond',
     'fa fa-leaf', 'fa fa-leaf',
     'fa fa-bicycle', 'fa fa-bicycle'
 ];
-//spread the array of cards
-let card = [...cards];
-let emptyCards = [];
+
+let card = document.getElementsByClassName("cards");
 
 //Generate a card
 function generatedCard(card) {
@@ -58,6 +57,11 @@ function shuffle(array) {
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
+let openCards = [];
+let allCards = document.querySelectorAll('.card');
+
+initGame();
+
 function initGame() {
     let deck = document.querySelector('.deck');
     let cardHTML = shuffle(cards).map(function(card) {
@@ -65,41 +69,60 @@ function initGame() {
     });
 
     deck.innerHTML = cardHTML.join('');
-    let allCards = document.querySelectorAll('.card');
-    let openCards = [];
+    allCards = document.querySelectorAll('.card');
 
     allCards.forEach(function(card) {
         card.addEventListener('click', function(e) {
-
-            if (!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match'));
+            //if (!card.classList.contains('open') && !card.classList.contains('show') && !card.classList.contains('match') && card.classList.contains('unmatched'));
             openCards.push(card);
             card.classList.add('open', 'show');
 
-            if (openCards.length == 2) {
-                if (openCards[0].dataset.card == openCards[1].dataset.card) {
-                    openCards[0].classList.add('match');
-                    openCards[0].classList.add('open');
-                    openCards[0].classList.add('show');
-
-                    openCards[1].classList.add('match');
-                    openCards[1].classList.add('open');
-                    openCards[1].classList.add('show');
+            if (openCards.length === 2) {
+                if (openCards[0].dataset.card === openCards[1].dataset.card) {
+                    matched();
+                } else {
+                    unmatched();
                 }
-                setTimeout(function() {
-                    openCards.forEach(function(card) {
-                        card.classList.remove('open', 'show');
-                    });
-                    openCards = [];
-                }, 1000);
             }
-
         });
     });
 }
 
-initGame();
+// match the 2 cards that are open if they are of the same type
+function matched() {
+    openCards[0].classList.add("match", "disabled");
+    openCards[1].classList.add("match", "disabled");
+    openCards = [];
+};
 
+//create an umatched function
+function unmatched() {
+    openCards[0].classList.add('unmatched');
+    openCards[1].classList.add('unmatched');
+    disable();
+    setTimeout(function() {
+        enable();
+        openCards = [];
+    }, 1100);
+};
+
+// restart the game and lopp into initialise game
 function restartGame() {
     initGame();
-    console.log('Hello');
+};
+
+// disable the unopened cards
+function disable() {
+    openCards[0].classList.add('disabled');
+    openCards[1].classList.add('disabled');
+    allCards.forEach(function(card) {
+        card.classList.add('disabled');
+    });
+};
+
+//enable all cards
+function enable() {
+    allCards.forEach(function(card) {
+        card.classList.remove('disabled', 'open', 'show', 'unmatched');
+    });
 };
