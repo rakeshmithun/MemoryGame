@@ -111,8 +111,16 @@ h1 {
 
 .score-panel {
     text-align: left;
-    width: 345px;
     margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.score-panel .moves {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
 }
 
 .score-panel .stars {
@@ -132,8 +140,14 @@ h1 {
     cursor: pointer;
 }
 
+.score-panel .timer {
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem;
+}
 
-/* animations */
+
+/* animations - helper code */
 
 @keyframes flipInY {
     from {
@@ -225,5 +239,19 @@ h1 {
     }
     .popup {
         width: 60%;
+    }
+}
+
+
+/****** Media queries
+***************************/
+
+@media (max-width: 320px) {
+    .deck {
+        width: 85%;
+    }
+    .deck .card {
+        height: 4.7rem;
+        width: 4.7rem;
     }
 }
