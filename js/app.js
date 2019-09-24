@@ -122,6 +122,8 @@ function unmatched() {
 // restart the game and lopp into initialise game
 function restartGame() {
     initGame();
+    moves = 0;
+    counter.innerHTML = moves;
 };
 
 // disable the unopened cards
@@ -142,7 +144,7 @@ function enable() {
 
 //declare timer variables
 second = 0;
-minute = 0
+minute = 0;
 hour = 0;
 let internval;
 
@@ -150,15 +152,14 @@ function movesCounter() {
     moves++
     counter.innerHTML = moves;
     if (moves === 1) {
-        second = 0;
-        minute = 0;
-        hour = 0;
+        // second = 0;
+        // minute = 0;
+        // hour = 0;
         startTimer();
     }
 }
 
 function startTimer() {
-    //initGame();
     interval = setInterval(function() {
         timer.innerHTML = minute + "mins " + second + "secs";
         second++;
@@ -171,4 +172,4 @@ function startTimer() {
             minute = 0;
         }
     }, 1000);
-}
+};
