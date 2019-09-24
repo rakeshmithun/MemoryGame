@@ -124,6 +124,16 @@ function restartGame() {
     initGame();
     moves = 0;
     counter.innerHTML = moves;
+    clearAllFunction();
+};
+
+//clear timer function
+function clearAllFunction() {
+    second = 0;
+    minute = 0;
+    hour = 0;
+    timer.innerHTML = "0 mins 0 secs";
+    clearInterval(interval);
 };
 
 // disable the unopened cards
@@ -146,8 +156,9 @@ function enable() {
 second = 0;
 minute = 0;
 hour = 0;
-let internval;
+let interval;
 
+//move counter function
 function movesCounter() {
     moves++
     counter.innerHTML = moves;
@@ -159,6 +170,7 @@ function movesCounter() {
     }
 }
 
+//timer function
 function startTimer() {
     interval = setInterval(function() {
         timer.innerHTML = minute + "mins " + second + "secs";
