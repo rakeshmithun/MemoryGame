@@ -39,9 +39,6 @@ let counter = document.querySelector(".moves");
 //select timer class
 let timer = document.querySelector(".timer");
 
-// close icon in modal
-let closeicon = document.querySelector(".close");
-
 // declare modal
 let modal = document.getElementById("popup1")
 
@@ -90,6 +87,7 @@ function initGame() {
                 movesCounter();
                 if (openCards[0].dataset.card === openCards[1].dataset.card) {
                     matched();
+                    allMatched();
                 } else {
                     unmatched();
                 }
@@ -107,11 +105,9 @@ function matched() {
 }
 
 //all cards matched function which calls on the congrats modal function
-//TODO: currently not returning the length 4 of matched cards
 function allMatched() {
     let matchedCards = document.getElementsByClassName("match");
-    if (matchedCards.length === 4) {
-        console.log(fourcards);
+    if (matchedCards.length === 16) {
         congratulations();
     }
 }
@@ -127,7 +123,7 @@ function unmatched() {
     }, 1100);
 }
 
-// restart the game and lopp into initialise game
+// restart the game and re-run initGame
 function restartGame() {
     initGame();
     moves = 0;
@@ -224,19 +220,26 @@ function congratulations() {
     document.getElementById("finalMove").innerHTML = moves;
     document.getElementById("starRating").innerHTML = starRating;
     document.getElementById("totalTime").innerHTML = finalTime;
-    //closeicon on modal
-    closeModal();
-};
+}
 
+//click event for close modal
+document.querySelector(".close").addEventListener("click", function() {
+    return closeModal();
+});
 
 // close icon on modal
 function closeModal() {
     modal.classList.remove("show");
-    initGame();
+    restartGame();
 };
+
+//click event for play again button as element
+document.getElementById("play-again").addEventListener("click", function() {
+    return playAgain();
+});
 
 // reset the game by clicking the play again button
 function playAgain() {
     modal.classList.remove("show");
-    initGame();
+    restartGame();
 }
