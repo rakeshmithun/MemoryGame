@@ -201,6 +201,7 @@ h1 {
 
 .popup .close:hover {
     color: #E5F720;
+    cursor: pointer;
 }
 
 .popup .content-1,
@@ -229,6 +230,7 @@ h1 {
     font-family: 'Gloria Hallelujah', cursive;
     color: #ffffff;
     border-radius: 5px;
+    cursor: pointer;
 }
 
 
