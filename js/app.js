@@ -45,15 +45,6 @@ let closeicon = document.querySelector(".close");
 // declare modal
 let modal = document.getElementById("popup1")
 
-
-
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
-
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     var currentIndex = array.length,
@@ -94,7 +85,7 @@ function initGame() {
         card.addEventListener('click', function(e) {
             openCards.push(card);
             card.classList.add('open', 'show', 'disabled');
-            // setting move counter and matched/unmatched cards
+            // setting move counter and matched/unmatched cards based on open cards length
             if (openCards.length === 2) {
                 movesCounter();
                 if (openCards[0].dataset.card === openCards[1].dataset.card) {
@@ -115,6 +106,8 @@ function matched() {
     openCards = [];
 }
 
+//all cards matched function which calls on the congrats modal function
+//TODO: currently not returning the length 4 of matched cards
 function allMatched() {
     let matchedCards = document.getElementsByClassName("match");
     if (matchedCards.length === 4) {
@@ -174,6 +167,7 @@ hour = 0;
 let interval;
 let rating = 3;
 
+//apply star rating function: 
 function applyRating() {
     for (var i = 0; i < 3; i++) {
         stars[i].style.visibility = (i < rating) ? "show" : "collapse";
@@ -241,7 +235,7 @@ function closeModal() {
     initGame();
 };
 
-// @desciption for user to play Again 
+// reset the game by clicking the play again button
 function playAgain() {
     modal.classList.remove("show");
     initGame();
