@@ -59,13 +59,14 @@ function shuffle(array) {
 }
 
 initGame();
+let timerActive = false
 
 // function to intialise game
 function initGame() {
     //set initial timer value
     timer.innerHTML = '0 mins 0 secs';
     //set initial star rating
-    for (var i = 0; i < stars.length; i++) {
+    for (let i = 0; i < stars.length; i++) {
         stars[i].style.color = "#FFD700";
         stars[i].style.visibility = "visible";
     }
@@ -82,6 +83,11 @@ function initGame() {
         card.addEventListener('click', function(e) {
             openCards.push(card);
             card.classList.add('open', 'show', 'disabled');
+            //initiating the timer function
+            if (!timerActive) {
+                startTimer()
+                timerActive = true
+            }
             // setting move counter and matched/unmatched cards based on open cards length
             if (openCards.length === 2) {
                 movesCounter();
@@ -128,8 +134,10 @@ function restartGame() {
     initGame();
     moves = 0;
     counter.innerHTML = moves;
+    timer.innerHTML = "0 mins 0 secs";
     clearAllFunction();
     clearInterval(interval);
+    timerActive = false
 };
 
 //clear timer function
@@ -137,7 +145,6 @@ function clearAllFunction() {
     second = 0;
     minute = 0;
     hour = 0;
-    timer.innerHTML = "0 mins 0 secs";
 };
 
 // disable the unopened cards
@@ -156,11 +163,7 @@ function enable() {
     });
 };
 
-//declare timer variables
-second = 0;
-minute = 0;
-hour = 0;
-let interval;
+//declarting rating intialv value
 let rating = 3;
 
 //apply star rating function: 
@@ -174,23 +177,29 @@ function applyRating() {
 function movesCounter() {
     moves++
     counter.innerHTML = moves;
-    if (moves === 1) {
-        second = 0;
-        minute = 0;
-        hour = 0;
-        startTimer();
-    }
     if (moves > 8 && moves < 12) {
         if (rating > 0) {
             rating--;
             applyRating();
         }
-    } else if (moves > 13) {
+    } else if (moves >= 12) {
+        //apply 3 black stars if moves are 12 or more
+        //TODO: generate dynamic black stars or another penalising rating based on incremental moves 
+        for (let i = 0; i < stars.length; i++) {
+            stars[i].style.color = "#000000";
+            stars[i].style.visibility = "visible";
+        }
         if (rating < 0) {
             applyRating();
         }
     }
 }
+
+//declare timer variables
+second = 0;
+minute = 0;
+hour = 0;
+let interval;
 
 //timer function
 function startTimer() {
