@@ -17,7 +17,7 @@ function generatedCard(card) {
 //declare empty array as openCards
 let openCards = [];
 
-// declare variables for star icons
+//declare variables for star icons
 const stars = document.querySelectorAll(".fa-star");
 
 // stars list
@@ -58,6 +58,7 @@ function shuffle(array) {
     return array;
 }
 
+//initite game
 initGame();
 let timerActive = false
 
@@ -252,3 +253,7 @@ function playAgain() {
     modal.classList.remove("show");
     restartGame();
 }
+
+document.getElementById("open-modal").addEventListener("click", function() {
+    modal.classList.add('show');
+});
